@@ -171,19 +171,29 @@ Other physical approximations may operate on rheology
 \cite[e.g., acoustic approximation, ][]{zhu2009elastic}
 or structural complexity by means of homogenization \cite[]{capdeville2013residual}.
 
+The dimension-reduced fast methods can be used in conjunction with
+full 3-D methods to solve some multiscale problems, such as teleseismic 
+wavefields scattered by strong 3-D local structures
+\cite[e.g., ][]{masson2013numerical, monteiller2015three}. Such a methodology
+proves to be a good alternative to 3-D global simulations for the purpose of shallow
+structure studies. It could be extended to deep Earth if we 
+could make the background solver capable of propagating 3-D waves 
+but at a cost much lower than the 3-D local solver.
+
 The computational cost of fully discretized 3-D methods is model-agnostic. 
 It is then implied by the tremendous speedup of axisymmetric methods 
 (e.g. AxiSEM) that those 3-D methods may lavish a large 
-amount of computing power on model oversampling, not only for radial models but 
+amount of computing power on wavefield oversampling, not only for radial models but 
 also for 3-D models with smooth, long-wavelength lateral structures.  
 In this paper, we shall be concerned with bridging the gap between 
 fast methods for spherically symmetric media and slow methods for
 complex 3-D media by means of developing a method fully 
-adapted to model complexity. 
-The method is expected to be most efficient for 
-Earth models that are laterally smooth relative to seismic wavelengths, 
-but is to be seen as a fully convergent, general numerical wave solver. 
-In this context, we shall
+adapted to model complexity, without simplifying the models or 
+compromising on the accuracy of the solution.
+This method should come as a fully convergent numerical wave solver for 
+general 3-D Earth models, and is expected to be particularly more efficient 
+for state-of-the-art tomographic models, all of which naturally exhibit a structural 
+smoothness relative to seismic wavelengths. In this context, we shall
 now examine the nature of existent tomographic models as well as their
 underlying, continually developing methodologies.
 
@@ -220,8 +230,8 @@ Therefore, fast waveform modeling across a broad frequency band
 becomes increasingly important as seismologists attempt to extract  
 more information from complex seismic data. 
 
-Computational challenges stem not only from complexity in data space 
-but also from that in model space, limiting the application 
+Computational challenges stem not only from data space 
+but also from model space, limiting the application 
 of the next-generation tomographic methods.
 An essential step in seismic tomography is to calculate  
 Fr\'{e}chet sensitivity kernels
@@ -250,7 +260,7 @@ constructed by convolving a wavefield emanating from a seismic source with a
 receiver-originating adjoint wavefield that bears the misfit functional.
 Unfortunately, the formidable cost of global wave simulations
 (that need to be repeated numerous times for each waveform inversion) 
-keeps high-resolution adjoint tomography far from being 
+keeps adjoint tomography far from being 
 available as common practice, especially in view of data availability.
 
 Our initial consensus on the predominance of long-wavelength 
@@ -346,7 +356,13 @@ Hence, from a numerical aspect, it is unnecessary to describe the azimuthal
 variations using grid points distributed as densely as required to 
 describe the in-slice variations. Let us instead parameterize 
 the azimuthal dependence by Fourier series, considering the azimuthal
-periodicity of solution over $[0,2\pi)$, 
+periodicity of solution over $[0,2\pi)$, %
+\footnote{In this paper, we use $ijkl$ as spatial indices and 
+$\alpha\beta\gamma$ as Fourier series indices. Einstein summation convention only 
+applies to spatial indices. Superscripts acting \textit{directly} on 
+field variables denote Fourier series indices; e.g., $\rho^2$ represents the 
+second order Fourier coefficient of $\rho$, whereas the square of $\rho$, if
+needed, will be written as $\left(\rho\right)^2$.}
 \begin{equation}  
   u\left(r,\theta,\phi;t\right) \simeq \sum_{|\alpha| \le N_u} 
   u^\alpha\left(r,\theta;t\right)\exp\left(\mathbbm{i}\alpha\phi\right),
@@ -354,11 +370,7 @@ periodicity of solution over $[0,2\pi)$,
 \end{equation}
 where $N_u$ denotes the global maximum number of terms needed for an accurate 
 description, $u^\alpha$ the $\alpha$-th order complex Fourier coefficient 
-field\footnote{In this paper, superscripts acting \textit{directly} on 
-field variables denote Fourier series indices; e.g., $\rho^2$ represents the 
-second order Fourier coefficient of $\rho$, whereas the square of $\rho$, if
-needed, is written as $\left(\rho\right)^2$.}, 
-$t$ the time and $\mathbbm{i}=\sqrt{-1}$. 
+field, $t$ the time and $\mathbbm{i}=\sqrt{-1}$. 
 
 The separation of variables in \eqref{eq:demo} is 
 adapted to the dimension-dependent variability of global wavefields, that is, 
@@ -411,6 +423,7 @@ which are much fewer than the grid points required by the
     \includegraphics[width=.9\textwidth]{fig/snapshot/sketch.pdf} 
     \subcaption{sketch}
     \label{fig:sk}
+    \includegraphics[width=.9\textwidth]{fig/snapshot/colorbar.pdf} 
   \end{minipage}%
   \begin{minipage}{0.6\textwidth}
     \begin{minipage}{.585\textwidth}
@@ -444,7 +457,7 @@ which are much fewer than the grid points required by the
   PREM and 3-D model s40rts due to a monopole source, 
   computed by SPECFEM at a dominant period of 17s. 
   The snapshots are taken at $\sim$1430s after source origin 
-  and the color function shows displacement norm. 
+  and the color function shows displacement norm (mm). 
   The core regions are not plotted because displacement calculation
   in the fluid core is not implemented in SPECFEM. 
   (a) shows a sketch of source-centered coordinate system and 
@@ -871,10 +884,7 @@ i.e., for any functions $g(\phi)$ and $h(s,z)$,
 \subsection{Dimension-reduced weak form}
 Following the basic ideas in Section~\ref{sec:idea}, we characterize 
 the azimuthal dependences of functions in terms of Fourier series,
-i.e.%
-\footnote{In this paper, Einstein summation convention applies to 
-spatial indices such as $ijkl$ but not to Fourier indices such as
-$\alpha\beta\gamma$.},
+i.e.,
 \begin{align}
   & \mathbf{u}=\hat{\mathbf{g}}_{i}\left(\phi\right) u_i\!\left(s,\phi,z;t\right) 
   \simeq \hat{\mathbf{g}}_{i}\left(\phi\right) \!\sum_{|\alpha|\le n_u} \!
@@ -1178,7 +1188,7 @@ gradient \eqref{eq:axigrad_u}, the axial source term
   \begin{equation} 
     2\pi \left\langle \mathbf{f}^{-1},\mathbf{w}^1 \right\rangle _{D}=
     \frac{\hat{M}_{xz}-\mathbbm{i}\hat{M}_{yz}}{2} 
-    \left(w_{s,z}^1+\mathbbm{i}w_{\phi,z}^1\right)
+    \left(w_{s,z}^1+2w_{z,s}^1+\mathbbm{i}w_{\phi,z}^1\right)
     \label{eq:di}
   \end{equation}
   \item Quadrupole term ($\beta=2$):
@@ -1218,9 +1228,10 @@ $\mathbf{f}$, i.e.,
     \end{bmatrix}
     =
     \frac{\hat{M}_{xz}-\mathbbm{i}\hat{M}_{yz}}{2}
-    \delta\left(s\right)\delta'\left(z-z_\text{s}\right)
     \begin{bmatrix}
-      1\\\mathbbm{i}\\0
+      \delta\left(s\right)\delta'\left(z-z_\text{s}\right)\\
+      \mathbbm{i}\delta\left(s\right)\delta'\left(z-z_\text{s}\right)\\
+      2\delta'\left(s\right)\delta\left(z-z_\text{s}\right)
     \end{bmatrix}
     \label{eq:fdi}
   \end{equation}
@@ -1975,7 +1986,9 @@ circles of latitude at $\theta=60\degr$ and $\theta=120\degr$
 (blue rings in Fig.~\ref{fig:rec}), respectively. 
 Note that though we only compare waveforms on the surface,
 the good fit of body wave phases, both direct and multiple, should imply 
-a good fit of the interior wavefield. 
+a good fit of the interior wavefield, and, based on the self-adjointness 
+of the wave operator, the capability of our method to produce 
+accurate 3-D sensitivity kernels. 
 
 \begin{table}
 \begin{minipage}{\columnwidth}
