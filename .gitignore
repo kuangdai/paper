@@ -5,7 +5,4 @@
 *.fls
 *.log
 *.out
-*.pdf
 *.gz
-*.sty
-gji*
