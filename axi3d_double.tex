@@ -176,9 +176,9 @@ full 3-D methods to solve some multiscale problems, such as teleseismic
 wavefields scattered by strong 3-D local structures
 \cite[e.g., ][]{masson2013numerical, monteiller2015three}. Such a methodology
 proves to be a good alternative to 3-D global simulations for the purpose of shallow
-structure studies. It could be extended to deep Earth if we 
-could make the background solver capable of propagating 3-D waves 
-but at a cost much lower than the 3-D local solver.
+structure studies. The method we propose here could seamlessly be used either to 
+provide the ambient teleseismic wavefields in 1-D/3-D global models, or in a 
+future local-scale version as the ``box'' containing local structures. 
 
 The computational cost of fully discretized 3-D methods is model-agnostic. 
 It is then implied by the tremendous speedup of axisymmetric methods 
@@ -190,7 +190,7 @@ fast methods for spherically symmetric media and slow methods for
 complex 3-D media by means of developing a method fully 
 adapted to model complexity, without simplifying the models or 
 compromising on the accuracy of the solution.
-This method should come as a fully convergent numerical wave solver for 
+This method should be a fully convergent numerical wave solver for 
 general 3-D Earth models, and is expected to be particularly more efficient 
 for state-of-the-art tomographic models, all of which naturally exhibit a structural 
 smoothness relative to seismic wavelengths. In this context, we shall
@@ -1987,7 +1987,7 @@ circles of latitude at $\theta=60\degr$ and $\theta=120\degr$
 Note that though we only compare waveforms on the surface,
 the good fit of body wave phases, both direct and multiple, should imply 
 a good fit of the interior wavefield, and, based on the self-adjointness 
-of the wave operator, the capability of our method to produce 
+of the elastic wave operator, the capability of our method to produce 
 accurate 3-D sensitivity kernels. 
 
 \begin{table}
